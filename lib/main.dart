@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:livekit_client/livekit_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,6 +69,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> _joinLivekitRoom() async {
+    final roomOptions = RoomOptions(
+      adaptiveStream: true,
+      dynacast: true,
+      // ... your room options
+    );
+
+    final room = await LiveKitClient.connect("ws://localhost:7880", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgyNDk3NzEsImlzcyI6ImRldmtleSIsIm5hbWUiOiJ1c2VyMSIsIm5iZiI6MTY4ODE2MzM3MSwic3ViIjoidXNlcjEiLCJ2aWRlbyI6eyJyb29tIjoibXktZmlyc3Qtcm9vbSIsInJvb21Kb2luIjp0cnVlfX0.HLDtRZbgca9UTVjV0d8Ms1ukv_eCH11AoCqyN_fyt88", roomOptions: roomOptions);
+    try {
+      // video will fail when running in ios simulator
+      await room.localParticipant?.setCameraEnabled(true);
+    } catch (error) {
+      print('Could not publish video, error: $error');
+    }
+
+    await room.localParticipant?.setMicrophoneEnabled(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -106,20 +125,16 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'click here to join room',
             ),
-            Text(
-              '$_counter',
-              style: TextStyle(fontSize: 200),
-            ),
+            FloatingActionButton(
+              onPressed: _joinLivekitRoom,
+              tooltip: 'join',
+              child: const Icon(Icons.add),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
