@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'woah',
+      title: 'Flutter app',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: TextStyle(fontSize: 200),
             ),
           ],
         ),
