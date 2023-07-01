@@ -77,14 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final room = await LiveKitClient.connect("ws://localhost:7880", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgyNDk3NzEsImlzcyI6ImRldmtleSIsIm5hbWUiOiJ1c2VyMSIsIm5iZiI6MTY4ODE2MzM3MSwic3ViIjoidXNlcjEiLCJ2aWRlbyI6eyJyb29tIjoibXktZmlyc3Qtcm9vbSIsInJvb21Kb2luIjp0cnVlfX0.HLDtRZbgca9UTVjV0d8Ms1ukv_eCH11AoCqyN_fyt88", roomOptions: roomOptions);
+    
+    room.participants.forEach((key, value) {
+      print(value.identity);
+    });
+    
     try {
       // video will fail when running in ios simulator
-      await room.localParticipant?.setCameraEnabled(true);
+      await room.localParticipant?.setCameraEnabled(false);
     } catch (error) {
       print('Could not publish video, error: $error');
     }
 
-    await room.localParticipant?.setMicrophoneEnabled(true);
+    await room.localParticipant?.setMicrophoneEnabled(false);
   }
 
   @override
